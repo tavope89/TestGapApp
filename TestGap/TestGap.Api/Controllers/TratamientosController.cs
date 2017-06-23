@@ -28,7 +28,7 @@ namespace TestGap.Api.Controllers
             try
             {
                 respuesta.Tratamientos = db.Tratamientos.Take(5).ToList();
-                return Ok(respuesta);
+                return Json(respuesta);
             }
             catch (Exception)
             {
