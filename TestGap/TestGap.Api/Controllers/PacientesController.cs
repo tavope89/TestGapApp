@@ -48,13 +48,22 @@ namespace TestGap.Api.Controllers
         public IHttpActionResult GetPaciente(int id)
         {
             var respuesta = new RespuestaPaciente();
-            Paciente paciente = db.Pacientes.Find(id);
-            if (paciente == null)
+            try
             {
-                return Json(respuesta.RecordNotFound());
+                Paciente paciente = db.Pacientes.Find(id);
+                if (paciente == null)
+                {
+                    return Json(respuesta.RecordNotFound());
+                }
+                respuesta.Paciente = paciente;
+                return Json(respuesta);
+
             }
-            respuesta.Paciente = paciente;
-            return Json(respuesta);
+            
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // PUT: api/Pacientes/5
@@ -68,28 +77,38 @@ namespace TestGap.Api.Controllers
         public IHttpActionResult PutPaciente(int id, Paciente paciente)
         {
             var respuesta = new RespuestaPaciente();
-            if (!ModelState.IsValid || id != paciente.Id_Paciente)
-            {
-                return Json(respuesta.BadRequest());
-            }
-
-            db.Entry(paciente).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PacienteExists(id))
+                if (!ModelState.IsValid || id != paciente.Id_Paciente)
                 {
-                    return Json(respuesta.RecordNotFound()); ;
+                    return Json(respuesta.BadRequest());
                 }
-                Json(respuesta.ServerError());
-                
+
+                db.Entry(paciente).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PacienteExists(id))
+                    {
+                        return Json(respuesta.RecordNotFound()); ;
+                    }
+                    Json(respuesta.ServerError());
+
+                }
+
+                return Json(respuesta);
+
             }
 
-            return Json(respuesta);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
+            
         }
 
         // POST: api/Pacientes
@@ -98,19 +117,27 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <param name="paciente">Objeto que contiene los datos del paciente</param>
         /// <returns></returns>
-        [ResponseType(typeof(Paciente))]
+        [ResponseType(typeof (Paciente))]
         public IHttpActionResult PostPaciente(Paciente paciente)
         {
             var respuesta = new RespuestaPaciente();
-            if (!ModelState.IsValid)
+            try
             {
-                return Json(respuesta.BadRequest());
+                if (!ModelState.IsValid)
+                {
+                    return Json(respuesta.BadRequest());
+                }
+
+                db.Pacientes.Add(paciente);
+                db.SaveChanges();
+                respuesta.Paciente = paciente;
+                return Json(paciente);
             }
 
-            db.Pacientes.Add(paciente);
-            db.SaveChanges();
-            respuesta.Paciente = paciente;
-            return Json(paciente);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // DELETE: api/Pacientes/5
@@ -119,21 +146,30 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <param name="id">identificador del paciente a eliminar</param>
         /// <returns></returns>
-        [ResponseType(typeof(Paciente))]
+        [ResponseType(typeof (Paciente))]
         public IHttpActionResult DeletePaciente(int id)
         {
             var respuesta = new RespuestaPaciente();
-            Paciente paciente = db.Pacientes.Find(id);
-            if (paciente == null)
+            try
             {
-                return Json(respuesta.RecordNotFound());
+
+                Paciente paciente = db.Pacientes.Find(id);
+                if (paciente == null)
+                {
+                    return Json(respuesta.RecordNotFound());
+                }
+
+                db.Pacientes.Remove(paciente);
+                db.SaveChanges();
+
+                respuesta.Paciente = paciente;
+                return Json(respuesta);
             }
 
-            db.Pacientes.Remove(paciente);
-            db.SaveChanges();
-
-            respuesta.Paciente = paciente;
-            return Json(respuesta);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <returns></returns>
         public IHttpActionResult GetTratamientos()
-        {   
+        {
             var respuesta = new RespuestaTratamiento();
             try
             {
@@ -42,17 +42,25 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <param name="id">identificador del tratamiento que se desea consultar</param>
         /// <returns></returns>
-        [ResponseType(typeof(Tratamiento))]
+        [ResponseType(typeof (Tratamiento))]
         public IHttpActionResult GetTratamiento(int id)
         {
             var respuesta = new RespuestaTratamiento();
-            Tratamiento tratamiento = db.Tratamientos.Find(id);
-            if (tratamiento == null)
+            try
             {
-                return Json(respuesta.RecordNotFound());
+                Tratamiento tratamiento = db.Tratamientos.Find(id);
+                if (tratamiento == null)
+                {
+                    return Json(respuesta.RecordNotFound());
+                }
+                respuesta.Tratamiento = tratamiento;
+                return Json(respuesta);
             }
-            respuesta.Tratamiento = tratamiento;
-            return Json(respuesta);
+
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // PUT: api/Tratamientos/5
@@ -62,32 +70,42 @@ namespace TestGap.Api.Controllers
         /// <param name="id">Identificador del tramtamiento que se deasea actualizar</param>
         /// <param name="tratamiento">objeto que contiene los datos de la actualizacion a realizarse</param>
         /// <returns></returns>
-        [ResponseType(typeof(void))]
+        [ResponseType(typeof (void))]
         public IHttpActionResult PutTratamiento(int id, Tratamiento tratamiento)
         {
             var respuesta = new RespuestaTratamiento();
-            if (!ModelState.IsValid || id != tratamiento.Id_Tratamiento)
-            {
-                return Json(respuesta.BadRequest());
-            }
-
-            db.Entry(tratamiento).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TratamientoExists(id))
+
+                if (!ModelState.IsValid || id != tratamiento.Id_Tratamiento)
                 {
-                    return Json(respuesta.RecordNotFound());
+                    return Json(respuesta.BadRequest());
                 }
-                return Json(respuesta.ServerError()); ;
-                
+
+                db.Entry(tratamiento).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TratamientoExists(id))
+                    {
+                        return Json(respuesta.RecordNotFound());
+                    }
+                    return Json(respuesta.ServerError());
+                    ;
+
+                }
+
+                return Json(respuesta);
             }
 
-            return Json(respuesta);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // POST: api/Tratamientos
@@ -96,19 +114,28 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <param name="tratamiento">Objeto que contiene los datos dek tratamiento</param>
         /// <returns></returns>
-        [ResponseType(typeof(Tratamiento))]
+        [ResponseType(typeof (Tratamiento))]
         public IHttpActionResult PostTratamiento(Tratamiento tratamiento)
         {
             var respuesta = new RespuestaTratamiento();
-            if (!ModelState.IsValid)
+            try
             {
-                return Json(respuesta.BadRequest());
+
+                if (!ModelState.IsValid)
+                {
+                    return Json(respuesta.BadRequest());
+                }
+
+                db.Tratamientos.Add(tratamiento);
+                db.SaveChanges();
+                respuesta.Tratamiento = tratamiento;
+                return Json(respuesta);
             }
 
-            db.Tratamientos.Add(tratamiento);
-            db.SaveChanges();
-            respuesta.Tratamiento = tratamiento;
-            return Json(respuesta);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // DELETE: api/Tratamientos/5
@@ -117,20 +144,28 @@ namespace TestGap.Api.Controllers
         /// </summary>
         /// <param name="id">Identificador del tratamiento a eliminar</param>
         /// <returns></returns>
-        [ResponseType(typeof(Tratamiento))]
+        [ResponseType(typeof (Tratamiento))]
         public IHttpActionResult DeleteTratamiento(int id)
         {
             var respuesta = new RespuestaTratamiento();
-            Tratamiento tratamiento = db.Tratamientos.Find(id);
-            if (tratamiento == null)
+            try
             {
-                return Json(respuesta.RecordNotFound());
+                Tratamiento tratamiento = db.Tratamientos.Find(id);
+                if (tratamiento == null)
+                {
+                    return Json(respuesta.RecordNotFound());
+                }
+
+                db.Tratamientos.Remove(tratamiento);
+                db.SaveChanges();
+                respuesta.Tratamiento = tratamiento;
+                return Json(respuesta);
             }
 
-            db.Tratamientos.Remove(tratamiento);
-            db.SaveChanges();
-            respuesta.Tratamiento = tratamiento;
-            return Json(respuesta);
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         /// <summary>
