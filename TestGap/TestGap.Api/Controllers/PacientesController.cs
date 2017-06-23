@@ -8,6 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
+using TestGap.Api.Class;
 using TestGap.Api.Models;
 
 namespace TestGap.Api.Controllers
@@ -22,9 +24,18 @@ namespace TestGap.Api.Controllers
         /// Metodo que retorna los pacientes registrados
         /// </summary>
         /// <returns>Retorna la lista de pacientes</returns>
-        public IQueryable<Paciente> GetPacientes()
+        public IHttpActionResult GetPacientes()
         {
-            return db.Pacientes;
+            var respuesta= new RespuestaPaciente();
+            try
+            {
+                respuesta.Pacientes = db.Pacientes.Take(5).ToList();
+                return Json(respuesta);
+            }
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // GET: api/Pacientes/5
@@ -36,13 +47,14 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Paciente))]
         public IHttpActionResult GetPaciente(int id)
         {
+            var respuesta = new RespuestaPaciente();
             Paciente paciente = db.Pacientes.Find(id);
             if (paciente == null)
             {
-                return NotFound();
+                return Json(respuesta.RecordNotFound());
             }
-
-            return Ok(paciente);
+            respuesta.Paciente = paciente;
+            return Json(respuesta);
         }
 
         // PUT: api/Pacientes/5
@@ -55,14 +67,10 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPaciente(int id, Paciente paciente)
         {
-            if (!ModelState.IsValid)
+            var respuesta = new RespuestaPaciente();
+            if (!ModelState.IsValid || id != paciente.Id_Paciente)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != paciente.Id_Paciente)
-            {
-                return BadRequest();
+                return Json(respuesta.BadRequest());
             }
 
             db.Entry(paciente).State = EntityState.Modified;
@@ -75,15 +83,13 @@ namespace TestGap.Api.Controllers
             {
                 if (!PacienteExists(id))
                 {
-                    return NotFound();
+                    return Json(respuesta.RecordNotFound()); ;
                 }
-                else
-                {
-                    throw;
-                }
+                Json(respuesta.ServerError());
+                
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Json(respuesta);
         }
 
         // POST: api/Pacientes
@@ -95,15 +101,16 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Paciente))]
         public IHttpActionResult PostPaciente(Paciente paciente)
         {
+            var respuesta = new RespuestaPaciente();
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Json(respuesta.BadRequest());
             }
 
             db.Pacientes.Add(paciente);
             db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = paciente.Id_Paciente }, paciente);
+            respuesta.Paciente = paciente;
+            return Json(paciente);
         }
 
         // DELETE: api/Pacientes/5
@@ -115,16 +122,18 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Paciente))]
         public IHttpActionResult DeletePaciente(int id)
         {
+            var respuesta = new RespuestaPaciente();
             Paciente paciente = db.Pacientes.Find(id);
             if (paciente == null)
             {
-                return NotFound();
+                return Json(respuesta.RecordNotFound());
             }
 
             db.Pacientes.Remove(paciente);
             db.SaveChanges();
 
-            return Ok(paciente);
+            respuesta.Paciente = paciente;
+            return Json(respuesta);
         }
 
         /// <summary>

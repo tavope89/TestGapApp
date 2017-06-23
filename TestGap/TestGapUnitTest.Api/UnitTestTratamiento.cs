@@ -27,7 +27,8 @@ namespace TestGapUnitTest.Api
                 Correo = "tavope89@hotmail.com"
 
             });
-            var idPaciente = pController.GetPacientes().ToList().Last().Id_Paciente;
+            var idPaciente = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaPaciente>)(pController.GetPacientes()))
+                    .Content.Pacientes.ToList().Last().Id_Paciente;
             var tController = new TratamientosController();
             var temp = tController.PostTratamiento(new Tratamiento()
             {
@@ -47,8 +48,9 @@ namespace TestGapUnitTest.Api
         public void TestMethodObtenerTratamiento()
         {
             var tController = new TratamientosController();
-            var tratamientos = tController.GetTratamiento(tController.GetTratamientos().ToList().Last().Id_Tratamiento);
-            Assert.IsNotNull(tratamientos);
+            var tratamientos = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaTratamiento>)(tController.GetTratamientos()))
+                    .Content.Tratamientos.ToList();
+            Assert.IsTrue(tratamientos.Any());
         }
 
         /// <summary>
@@ -58,7 +60,8 @@ namespace TestGapUnitTest.Api
         public void TestMethodConsultarTratamientos()
         {
             var tController = new TratamientosController();
-            var tratamientos = tController.GetTratamientos();
+            var tratamientos = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaTratamiento>)(tController.GetTratamientos()))
+                    .Content.Tratamientos.ToList();
             Assert.IsTrue(tratamientos.Any());
         }
 
@@ -69,11 +72,13 @@ namespace TestGapUnitTest.Api
         public void TestMethodActualizarTratamiento()
         {
             var tController = new TratamientosController();
-            var tratamiento = tController.GetTratamientos().ToList().Last();
+            var tratamiento = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaTratamiento>)(tController.GetTratamientos()))
+                    .Content.Tratamientos.ToList().Last();
             int costo = tratamiento.Costo;
             tratamiento.Costo = (short)(tratamiento.Costo + 1);
             tController.PutTratamiento(tratamiento.Id_Tratamiento, tratamiento);
-            var tratamientoNuevo = tController.GetTratamientos().ToList().Last();
+            var tratamientoNuevo = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaTratamiento>)(tController.GetTratamientos()))
+                    .Content.Tratamientos.ToList().Last();
             Assert.IsTrue(tratamientoNuevo.Costo != costo);
         }
 
@@ -84,12 +89,13 @@ namespace TestGapUnitTest.Api
         public void TestMethodEliminarTratamiento()
         {
             var tController = new TratamientosController();
-            var tratamiento = tController.GetTratamientos().ToList().Last();
+            var tratamiento = ((System.Web.Http.Results.JsonResult<TestGap.Api.Class.RespuestaTratamiento>)(tController.GetTratamientos()))
+                    .Content.Tratamientos.ToList().Last();
             int idTratamiento = tratamiento.Id_Tratamiento;
             tController.DeleteTratamiento(idTratamiento);
             var t = tController.GetTratamiento(idTratamiento);
 
-            Assert.IsTrue(t.ToString() == "System.Web.Http.Results.NotFoundResult");
+            Assert.IsTrue(!(((System.Web.Http.Results.JsonResult<TestGap.Api.Models.RespuestaJsonWebApi>)(t)).Content).success);
         }
     }
 }

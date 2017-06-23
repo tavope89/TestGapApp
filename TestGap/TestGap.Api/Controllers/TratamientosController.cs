@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using TestGap.Api.Class;
 using TestGap.Api.Models;
 
 namespace TestGap.Api.Controllers
@@ -21,9 +22,18 @@ namespace TestGap.Api.Controllers
         /// Metodo que se encarga de consultar todos los tratamientos registrados
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Tratamiento> GetTratamientos()
-        {
-            return db.Tratamientos;
+        public IHttpActionResult GetTratamientos()
+        {   
+            var respuesta = new RespuestaTratamiento();
+            try
+            {
+                respuesta.Tratamientos = db.Tratamientos.Take(5).ToList();
+                return Ok(respuesta);
+            }
+            catch (Exception)
+            {
+                return Json(respuesta.ServerError());
+            }
         }
 
         // GET: api/Tratamientos/5
@@ -35,13 +45,14 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Tratamiento))]
         public IHttpActionResult GetTratamiento(int id)
         {
+            var respuesta = new RespuestaTratamiento();
             Tratamiento tratamiento = db.Tratamientos.Find(id);
             if (tratamiento == null)
             {
-                return NotFound();
+                return Json(respuesta.RecordNotFound());
             }
-
-            return Ok(tratamiento);
+            respuesta.Tratamiento = tratamiento;
+            return Json(respuesta);
         }
 
         // PUT: api/Tratamientos/5
@@ -54,14 +65,10 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutTratamiento(int id, Tratamiento tratamiento)
         {
-            if (!ModelState.IsValid)
+            var respuesta = new RespuestaTratamiento();
+            if (!ModelState.IsValid || id != tratamiento.Id_Tratamiento)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != tratamiento.Id_Tratamiento)
-            {
-                return BadRequest();
+                return Json(respuesta.BadRequest());
             }
 
             db.Entry(tratamiento).State = EntityState.Modified;
@@ -74,15 +81,13 @@ namespace TestGap.Api.Controllers
             {
                 if (!TratamientoExists(id))
                 {
-                    return NotFound();
+                    return Json(respuesta.RecordNotFound());
                 }
-                else
-                {
-                    throw;
-                }
+                return Json(respuesta.ServerError()); ;
+                
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Json(respuesta);
         }
 
         // POST: api/Tratamientos
@@ -94,15 +99,16 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Tratamiento))]
         public IHttpActionResult PostTratamiento(Tratamiento tratamiento)
         {
+            var respuesta = new RespuestaTratamiento();
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Json(respuesta.BadRequest());
             }
 
             db.Tratamientos.Add(tratamiento);
             db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = tratamiento.Id_Tratamiento }, tratamiento);
+            respuesta.Tratamiento = tratamiento;
+            return Json(respuesta);
         }
 
         // DELETE: api/Tratamientos/5
@@ -114,16 +120,17 @@ namespace TestGap.Api.Controllers
         [ResponseType(typeof(Tratamiento))]
         public IHttpActionResult DeleteTratamiento(int id)
         {
+            var respuesta = new RespuestaTratamiento();
             Tratamiento tratamiento = db.Tratamientos.Find(id);
             if (tratamiento == null)
             {
-                return NotFound();
+                return Json(respuesta.RecordNotFound());
             }
 
             db.Tratamientos.Remove(tratamiento);
             db.SaveChanges();
-
-            return Ok(tratamiento);
+            respuesta.Tratamiento = tratamiento;
+            return Json(respuesta);
         }
 
         /// <summary>

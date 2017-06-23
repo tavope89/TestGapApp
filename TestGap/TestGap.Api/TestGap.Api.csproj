@@ -163,6 +163,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Class\Autenticacion.cs" />
     <Compile Include="Class\Constantes.cs" />
+    <Compile Include="Class\RespuestaPaciente.cs" />
+    <Compile Include="Class\RespuestaTratamiento.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\PacientesController.cs" />
     <Compile Include="Controllers\PacientesTestGapController.cs" />
@@ -175,6 +177,7 @@
       <DependentUpon>TestGapModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Respuesta.cs" />
+    <Compile Include="Class\RespuestaJsonWebApi.cs" />
     <Compile Include="Models\TestGapModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

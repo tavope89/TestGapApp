@@ -14,6 +14,10 @@ namespace TestGap.Api.Class
         {
             public const int Exito = 0;
             public const int Error = -1;
+            public const int BadRequest = 400;
+            public const int NotAuthorized = 401;
+            public const int RecordNotFound = 404;
+            public const int ServerError = 500;
         }
 
         /// <summary>
@@ -23,6 +27,10 @@ namespace TestGap.Api.Class
         {
             public const string MSJError = "Ocurrió un error en la aplicación, intente de nuevo.";
             public const string MSJExito = "La operación se realizo con éxito.";
+            public const string BadRequest = "Bad Request";
+            public const string NotAuthorized = "Not Authorized";
+            public const string RecordNotFound = "RecordNotFound";
+            public const string ServerError = "Server Error";
         }
 
         /// <summary>
