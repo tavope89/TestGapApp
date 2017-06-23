@@ -1,0 +1,46 @@
+﻿@model List<TestGap.Api.Models.Tratamiento>
+
+<div class="table-responsive">
+    <table class="table" id="TablaTratamientos">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Fecha_Inicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Fecha_Fin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Costo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Detalle)
+            </th>
+            <th>Acciones</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha_Inicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha_Fin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Costo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Detalle)
+                </td>
+                <td>
+                    <a id="linkEditarTratamiento_@(item.Id_Tratamiento)" class='lnkEditarTratamiento'>Editar</a> |
+                    <a id="linkDetalleTratamiento_@(item.Id_Tratamiento)" class='lnkDetalleTratamiento'>Detalle</a> |
+                    <a id="linkEliminarTratamiento_@(item.Id_Tratamiento)" class='lnkEliminarTratamiento'>Eliminar</a> 
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+

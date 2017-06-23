@@ -1,0 +1,58 @@
+﻿@model TestGap.Api.Models.Tratamiento
+
+<h2>Eliminar</h2>
+
+<h3>Esta seguro de que desea borrar el registro permanentemente?</h3>
+<div>
+    <h4>Tratamiento</h4>
+    <hr/>
+    @Html.HiddenFor(model => model.Id_Tratamiento)
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_Inicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_Inicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_Fin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_Fin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Costo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Costo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Detalle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Detalle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Paciente.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Paciente.Nombre)
+        </dd>
+
+    </dl>
+
+    @Html.AntiForgeryToken()
+    <div class="form-actions no-color">
+        <input id="btnEliminarTratamiento" type="submit" value="Eliminar Tratamiento" class="btn btn-default"/>
+    </div>
+
+</div>

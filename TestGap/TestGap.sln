@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGap.Api", "TestGap.Api\TestGap.Api.csproj", "{CE7A63C0-A2E9-4886-9538-548AA267925B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestGap.TCL", "TestGap.TCL", "{1649A09A-1EC0-4791-937A-2AFA65AA0DC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestGap.SWL", "TestGap.SWL", "{75079479-EB49-490F-955C-B12EB5BF1138}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE7A63C0-A2E9-4886-9538-548AA267925B} = {75079479-EB49-490F-955C-B12EB5BF1138}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<TestGap.Api.Models.Paciente>
+
+
+@{
+    ViewBag.Title = "Pacientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consulta de Pacientes</h2>
+
+<p>
+    @Html.ActionLink("Registrar Nuevo Paciente", "Crear")
+</p>
+@using (Html.BeginForm("Index", "PacientesTestGap", FormMethod.Get))
+{
+    <p>
+        Buscar: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
+
+<div class="table-responsive">
+    <table class="table" id="TablaPacientes">
+        
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Identificacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Telefono)
+            </th>
+            <th>Acciones</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Identificacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new {id = item.Id_Paciente}) |
+                    @Html.ActionLink("Detalle", "Detalle", new {id = item.Id_Paciente}) |
+                    @Html.ActionLink("Eliminar", "Eliminar", new {id = item.Id_Paciente})
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter }))
