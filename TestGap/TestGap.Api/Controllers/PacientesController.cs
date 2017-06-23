@@ -12,7 +12,7 @@ using TestGap.Api.Models;
 
 namespace TestGap.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class PacientesController : ApiController
     {
         private GapTestEntitiesFramework db = new GapTestEntitiesFramework();

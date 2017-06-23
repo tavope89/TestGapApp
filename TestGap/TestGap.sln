@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestGap.TCL", "TestGap.TCL"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestGap.SWL", "TestGap.SWL", "{75079479-EB49-490F-955C-B12EB5BF1138}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGapUnitTest.Api", "TestGapUnitTest.Api\TestGapUnitTest.Api.csproj", "{D726A9CE-3A03-491C-8234-13458E652395}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,16 @@ Global
 		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7A63C0-A2E9-4886-9538-548AA267925B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D726A9CE-3A03-491C-8234-13458E652395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D726A9CE-3A03-491C-8234-13458E652395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D726A9CE-3A03-491C-8234-13458E652395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D726A9CE-3A03-491C-8234-13458E652395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE7A63C0-A2E9-4886-9538-548AA267925B} = {75079479-EB49-490F-955C-B12EB5BF1138}
+		{D726A9CE-3A03-491C-8234-13458E652395} = {1649A09A-1EC0-4791-937A-2AFA65AA0DC8}
 	EndGlobalSection
 EndGlobal
